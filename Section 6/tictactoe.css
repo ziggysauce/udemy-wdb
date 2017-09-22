@@ -6,16 +6,17 @@ table {
   margin: 0 auto;
 }
 
+td {
+  width: 100px;
+  height: 100px;
+}
+
 tr:nth-child(2) td {
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
-  width: 100px;
-  height: 100px;
 }
 
 tr td:nth-child(2) {
   border-left: 1px solid #000;
   border-right: 1px solid #000;
-  width: 100px;
-  height: 100px;
 }
