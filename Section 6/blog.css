@@ -1,0 +1,44 @@
+/*border color: #BDC3C7
+date color: #3498DB
+H2 color: #2C3E50
+font: source sans pro*/
+
+/*letter-spacing in date!*/
+/*hr element between paragrpahs*/
+
+
+body {
+  font-family: Source Sans Pro;
+  border: 20px solid #BDC3C7;
+  max-width: 700px;
+  width: 80%;
+  padding: 20px;
+  margin: 20px auto;
+}
+
+.para {
+  margin-bottom: 20px;
+}
+
+.date {
+  letter-spacing: .2rem;
+  color: #3498DB;
+  text-transform: uppercase;
+}
+
+h2 {
+  color: #2C3E50;
+  font-weight: 800;
+  font-size: 2rem;
+}
+
+.leftbord {
+  border-left: 5px solid #BDC3C7;
+  padding-left: 5px;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
