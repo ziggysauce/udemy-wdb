@@ -1,19 +1,16 @@
 {
-  "name": "backend",
+  "name": "apis",
   "version": "1.0.0",
-  "description": "wdb backend practice",
-  "main": "index.js",
+  "description": "",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Dan Nguyen",
+  "author": "",
   "license": "ISC",
   "dependencies": {
-    "cat-me": "^1.0.3",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
-    "faker": "^4.1.0",
-    "knock-knock-jokes": "^1.7.0",
     "request": "^2.83.0"
   }
 }
