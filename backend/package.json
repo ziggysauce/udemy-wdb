@@ -15,5 +15,6 @@
     "faker": "^4.1.0",
     "knock-knock-jokes": "^1.7.0",
     "request": "^2.83.0"
-  }
+  },
+  "devDependencies": {}
 }
