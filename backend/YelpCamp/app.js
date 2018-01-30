@@ -2,9 +2,12 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
 
 const Campground = require('./models/campground');
 const Comment = require('./models/comment');
+const User = require('./models/user');
 const seedDB = require('./seeds');
 
 mongoose.connect('mongodb://localhost/yelp_camp');
@@ -14,6 +17,25 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
 seedDB();
+
+// PASSPORT CONFIG
+app.use(require('express-session')({
+  secret: 'Once again Rusty wins cutest dog!',
+  resave: false,
+  saveUninitialized: false,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// MIDDLEWARE
+// Calls on every route (DRY)
+app.use((req,res,next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
 
 // Landing Page
 app.get('/', (req,res) => {
@@ -78,7 +100,7 @@ app.get('/campgrounds/:id', (req,res) => {
 // COMMENTS ROUTES
 // =======================
 
-app.get('/campgrounds/:id/comments/new', (req,res) => {
+app.get('/campgrounds/:id/comments/new', isLoggedIn, (req,res) => {
   // Find campground by id
   Campground.findById(req.params.id, (err, campground) => {
     if (err) {
@@ -90,7 +112,7 @@ app.get('/campgrounds/:id/comments/new', (req,res) => {
 });
 
 
-app.post('/campgrounds/:id/comments', (req,res) => {
+app.post('/campgrounds/:id/comments', isLoggedIn, (req,res) => {
   // lookup campground using ID
   Campground.findById(req.params.id, (err, campground) => {
     if (err) {
@@ -111,6 +133,54 @@ app.post('/campgrounds/:id/comments', (req,res) => {
 });
 
 
+// ==========================
+// AUTH ROUTES ==============
+// ==========================
+
+// Show register forms
+app.get('/register', (req,res) => {
+  res.render('register');
+});
+
+// Handle sign up logic
+app.post('/register', (req,res) => {
+  const newUser = new User({username: req.body.username});
+  User.register(newUser, req.body.password, (err, user) => {
+    if (err) {
+      console.log(err);
+      return res.render('register');
+    }
+    passport.authenticate('local')(req, res, () => {
+      res.redirect('/campgrounds');
+    });
+  });
+});
+
+// Show login form
+app.get('/login', (req,res) => {
+  res.render('login');
+});
+
+// Handle login logic
+app.post('/login', passport.authenticate('local', {
+  successRedirect: '/campgrounds',
+  failureRedirect: '/login'
+  }), (req,res) => {
+});
+
+// Logout route
+app.get('/logout', (req,res) => {
+  req.logout();
+  res.redirect('/campgrounds');
+});
+
+// MIDDLEWARE
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');
+}
 
 app.listen(3000, function() {
   console.log('Server listening on port 3000');
