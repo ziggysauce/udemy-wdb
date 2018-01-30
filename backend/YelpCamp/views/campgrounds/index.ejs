@@ -1,4 +1,4 @@
-<% include partials/header %>
+<% include ../partials/header %>
 
 
 <div class="container">
@@ -15,7 +15,7 @@
   <div class="row text-center" style="display:flex; flex-wrap:wrap;">
     <% campgrounds.forEach((campground) => { %>
       <div class="col-md-3 col-sm-6">
-        <div class="img-thumbnail">
+        <div class="thumbnail">
           <img src="<%= campground.image %>" width="100%">
           <div class="caption">
             <h4><%= campground.name %></h4>
@@ -31,4 +31,4 @@
 
   </div>
 
-<% include partials/footer %>
+<% include ../partials/footer %>
